@@ -1,7 +1,37 @@
 [{
     "title": "My Playlist",
+    "cover": "profile.jpeg",
+    "artist": "Various Artists",
+    "file": "perfect.mp3",
+    "duration": "3:45"
+},{
+    "title": "My Playlist",
     "cover": "musik/cover.jpg",
     "artist": "Various Artists",
-    "file": "musik/perfect.mp3",
+    "file": "perfect.mp3",
+    "duration": "3:45"
+},{
+    "title": "My Playlist",
+    "cover": "profile.jpeg",
+    "artist": "Various Artists",
+    "file": "perfect.mp3",
+    "duration": "3:45"
+},{
+    "title": "My Playlist",
+    "cover": "musik/cover.jpg",
+    "artist": "Various Artists",
+    "file": "perfect.mp3",
+    "duration": "3:45"
+},{
+    "title": "My Playlist",
+    "cover": "profile.jpeg",
+    "artist": "Various Artists",
+    "file": "perfect.mp3",
+    "duration": "3:45"
+},{
+    "title": "My Playlist",
+    "cover": "musik/cover.jpg",
+    "artist": "Various Artists",
+    "file": "perfect.mp3",
     "duration": "3:45"
 }]
