@@ -1,37 +1,72 @@
-[{
-    "title": "My Playlist",
+[
+  {
+    "title": "Di Ujung Jalan",
     "cover": "profile.jpeg",
     "artist": "Various Artists",
-    "file": "perfect.mp3",
+    "file": "di-ujung-jalan.mp3",
     "duration": "3:45"
-},{
-    "title": "My Playlist",
+  },
+  {
+    "title": "Lihat Kebunku",
+    "cover": "musik/cover.jpg",
+    "artist": "Various Artists",
+    "file": "lihat-kebunku.mp3",
+    "duration": "3:45"
+  },
+  {
+    "title": "Ada Titik-Titik di Ujung Doa",
+    "cover": "profile.jpeg",
+    "artist": "Various Artists",
+    "file": "ada-titik-titik-di-ujung-doa.mp3",
+    "duration": "3:45"
+  },
+  {
+    "title": "Always",
+    "cover": "musik/cover.jpg",
+    "artist": "Various Artists",
+    "file": "always.mp3",
+    "duration": "3:45"
+  },
+  {
+    "title": "Nanti Kita Seperti Ini",
+    "cover": "profile.jpeg",
+    "artist": "Batas Senja",
+    "file": "batas-senja-nanti-kita-seperti-ini.mp3",
+    "duration": "3:45"
+  },
+  {
+    "title": "Kita Ke Sana",
+    "cover": "musik/cover.jpg",
+    "artist": "Hindia",
+    "file": "hindia-kita-ke-sana.mp3",
+    "duration": "3:45"
+  },
+  {
+    "title": "Kepada Noor",
+    "cover": "profile.jpeg",
+    "artist": "Panji Sakti",
+    "file": "panji-sakti-kepada-noor.mp3",
+    "duration": "3:45"
+  },
+  {
+    "title": "Perfect",
     "cover": "musik/cover.jpg",
     "artist": "Various Artists",
     "file": "perfect.mp3",
     "duration": "3:45"
-},{
-    "title": "My Playlist",
+  },
+  {
+    "title": "Seamin Tak Seiman",
     "cover": "profile.jpeg",
     "artist": "Various Artists",
-    "file": "perfect.mp3",
+    "file": "seamin-tak-seiman.mp3",
     "duration": "3:45"
-},{
-    "title": "My Playlist",
+  },
+  {
+    "title": "Sesuatu di Jogja",
     "cover": "musik/cover.jpg",
     "artist": "Various Artists",
-    "file": "perfect.mp3",
+    "file": "sesuatu-di-jogja.mp3",
     "duration": "3:45"
-},{
-    "title": "My Playlist",
-    "cover": "profile.jpeg",
-    "artist": "Various Artists",
-    "file": "perfect.mp3",
-    "duration": "3:45"
-},{
-    "title": "My Playlist",
-    "cover": "musik/cover.jpg",
-    "artist": "Various Artists",
-    "file": "perfect.mp3",
-    "duration": "3:45"
-}]
+  }
+]
