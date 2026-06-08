@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinta Itu Apa? (Cinematic Experience)</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #030305;
+            color: #f0f0f0;
+            font-family: 'EB Garamond', 'Georgia', serif; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 30%, #000 110%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        #start-screen {
+            position: absolute;
+            z-index: 10;
+        }
+
+        #start-btn {
+            padding: 15px 35px;
+            font-size: 16px;
+            color: white; 
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 30px;
+            cursor: pointer;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-family: 'EB Garamond', serif;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            transition: all 1s ease;
+        }
+
+        #start-btn:hover {
+            background: rgba(216, 182, 113, 0.1);
+            box-shadow: 0 0 30px rgba(216, 182, 113, 0.4);
+            transform: scale(1.05);
+            border-color: #d8b671;
+        }
+
+        #quote-container {
+            width: 85%;
+            max-width: 900px;
+            z-index: 5;
+            display: none;
+            position: absolute;
+        }
+
+        #quote-text {
+            font-size: 30px;
+            line-height: 2.2;
+            text-shadow: 0 0 20px rgba(0,0,0,0.9);
+            font-weight: 300;
+        }
+
+        #photo-container {
+            position: absolute;
+            z-index: 5;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
+        }
+
+        #photo-container img {
+            max-width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.1), 0 0 100px rgba(230, 126, 34, 0.2);
+            filter: sepia(30%) brightness(0.8) contrast(1.2);
+            transition: all 5s ease;
+            transform: scale(0.95);
+        }
+
+        .show-photo {
+            opacity: 1 !important;
+        }
+
+        .show-photo img {
+            transform: scale(1) !important;
+        }
+
+        .photo-caption {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #d8b671;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        .show-quote {
+            opacity: 0;
+            animation: blurFadeIn 2.5s forwards;
+        }
+
+        .hide-quote {
+            opacity: 1;
+            animation: blurFadeOut 2s forwards;
+        }
+
+        @keyframes blurFadeIn {
+            0% { opacity: 0; filter: blur(15px); transform: scale(0.95); }
+            100% { opacity: 1; filter: blur(0px); transform: scale(1); }
+        }
+
+        @keyframes blurFadeOut {
+            0% { opacity: 1; filter: blur(0px); transform: scale(1); }
+            100% { opacity: 0; filter: blur(15px); transform: scale(1.05); }
+        }
+
+        span.highlight-fire {
+            color: #ff9f43; 
+            font-weight: bold;
+            display: inline-block;
+            animation: firePulse 3s infinite alternate;
+        }
+        
+        span.highlight-green {
+            color: #39ff14; 
+            font-weight: bold;
+            display: inline-block;
+            animation: greenPulse 3s infinite alternate;
+        }
+        
+        @keyframes greenPulse {
+            0% { text-shadow: 0 0 10px rgba(80, 255, 120, 0.5); }
+            100% { text-shadow: 0 0 25px rgba(80, 255, 120, 0.9); }
+        }
+
+        @keyframes firePulse {
+            0% { text-shadow: 0 0 10px rgba(255, 159, 67, 0.5); }
+            100% { text-shadow: 0 0 25px rgba(255, 159, 67, 0.9); }
+        }
+
+        span.highlight-pain {
+            color: #8c7ae6;
+            font-style: italic;
+            text-shadow: 0 0 15px rgba(140, 122, 230, 0.5);
+        }
+        
+        span.highlight-flicker-out {
+            color: #7f8fa6;
+            animation: flickerOut 7s forwards;
+        }
+
+        @keyframes flickerOut {
+            0% { opacity: 1; color: #f5f6fa; text-shadow: 0 0 15px #f5f6fa; }
+            50% { opacity: 0.5; color: #dcdde1; }
+            70% { opacity: 1; color: #7f8fa6; text-shadow: none; }
+            100% { opacity: 0.2; color: #353b48; }
+        }
+
+        @media (max-width: 600px) {
+            #quote-text { font-size: 22px; line-height: 1.8; }
+            #photo-container img { max-width: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgm" loop>
+        <source src="./music.mp3" type="audio/mpeg">
+    </audio>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <div id="start-screen">
+        <button id="start-btn">Cinta??</button>
+    </div>
+
+    <div id="quote-container">
+        <p id="quote-text"></p>
+    </div>
+
+    <div id="photo-container">
+        <img src="./photo.jpg" alt="Kenangan" id="my-photo">
+        <div class="photo-caption">8 juni 2026</div>
+    </div>
+
+    <script>
+        const quotesData = [
+            { text: "Cinta itu apa?" },
+            { text: "Jika kau menanyakannya kepada seratus orang..." },
+            { text: "mungkin kau akan mendapatkan seratus jawaban yang berbeda." },
+            { text: "Ada yang menyebutnya <span class='highlight-green'>kebahagiaan.</span>." },
+            { text: "Ada yang mengingatnya sebagai <span class='highlight-fire'>luka.</span>" },
+            { text: "Ada yang menemukannya sebagai rumah." },
+            { text: "Dan ada yang kehilangannya tepat ketika merasa telah nyaman." },
+            { text: "Namun jika aku harus menggambarkannya..." },
+            { text: "maka cinta adalah <span class='highlight-fire'>api.</span>" },
+            { text: "Bukan api yang membara dan menghanguskan dalam sekejap." },
+            { text: "Bukan pula api yang menyala terang untuk dipandang semua orang." },
+            { text: "Cinta adalah <span class='highlight-fire'>nyala kecil</span> yang diam-diam tumbuh di dalam hati." },
+            { text: "Ia hadir tanpa suara, tanpa meminta izin..." },
+            { text: "lalu perlahan <span class='highlight-fire'>menghangatkan</span> ruang-ruang dalam diri yang selama ini terasa dingin dan kosong." },
+            { text: "Karena cinta, seseorang yang biasa saja bisa menjadi alasan kita tersenyum tanpa sebab." },
+            { text: "Karena cinta, sebuah nama bisa terdengar lebih indah daripada ribuan kata lainnya." },
+            { text: "Dan karena cinta, kehadiran seseorang dapat terasa seperti rumah di tengah perjalanan yang melelahkan." },
+            { text: "Namun setiap <span class='highlight-fire'>api</span> memiliki sifat yang sama." },
+            { text: "Semakin hangat ia membuatmu bertahan..." },
+            { text: "semakin <span class='highlight-pain'>sakit</span> rasanya ketika ia mulai <span class='highlight-flicker-out'>padam.</span>" },
+            { text: "Sebab luka terbesar dalam cinta bukanlah ketika seseorang pergi." },
+            { text: "Melainkan ketika kenangan tentang <span class='highlight-fire'>kehangatannya</span> tetap ada." },
+            { text: "Ketika tempat yang dulu membuatmu merasa aman, kini hanya bisa dikunjungi melalui ingatan." },
+            { text: "Ketika tawa yang dulu mengisi hari-harimu kini hanya menjadi gema yang sesekali datang tanpa permisi." },
+            { text: "Dan mungkin itulah alasan mengapa cinta begitu indah sekaligus <span class='highlight-pain'>menyakitkan.</span>" },
+            { text: "Ia tidak hanya mengajarkan kita cara memiliki seseorang." },
+            { text: "Ia juga mengajarkan kita cara merindukan seseorang yang tidak lagi bisa kita miliki." },
+            { text: "Namun meski begitu, manusia tetap memilih untuk mencintai." },
+            { text: "Tetap memilih mendekat pada <span class='highlight-fire'>api.</span>" },
+            { text: "Tetap memilih menghangatkan hati yang lain." },
+            { text: "Tetap memilih percaya, meskipun tahu bahwa suatu hari mereka mungkin akan terluka." },
+            { text: "Karena pada akhirnya..." },
+            { text: "hidup yang pernah disentuh cinta akan selalu lebih berarti daripada hidup yang tidak pernah merasakannya sama sekali." },
+            { text: "Dan jika cinta memang adalah <span class='highlight-fire'>api...</span>" },
+            { text: "maka mungkin kita semua hanyalah pengembara yang rela menanggung <span class='highlight-pain'>luka bakarnya...</span>" },
+            { text: "demi merasakan <span class='highlight-fire'>hangatnya</span> walau hanya untuk <span class='highlight-green'>sesaat.</span>." }
+        ];
+
+        const startBtn = document.getElementById('start-btn');
+        const startScreen = document.getElementById('start-screen');
+        const quoteContainer = document.getElementById('quote-container');
+        const quoteText = document.getElementById('quote-text');
+        const photoContainer = document.getElementById('photo-container');
+        const bgm = document.getElementById('bgm');
+
+        let currentIndex = 0;
+
+        startBtn.addEventListener('click', () => {
+            startScreen.style.display = 'none';
+            quoteContainer.style.display = 'block';
+            
+            bgm.volume = 0.5;
+            bgm.play().catch(e => console.log("Audio diblokir browser: ", e));
+            initParticles();
+            
+            showNextQuote();
+        });
+
+        function showNextQuote() {
+    if (currentIndex < quotesData.length) {
+        quoteText.innerHTML = quotesData[currentIndex].text;
+
+        quoteText.classList.remove('hide-quote');
+        quoteText.classList.add('show-quote');
+
+        const textLength = quoteText.innerText.length;
+        const readingTime = Math.max(3500, textLength * 95) * 1.5;
+
+        setTimeout(() => {
+            quoteText.classList.remove('show-quote');
+            quoteText.classList.add('hide-quote');
+            currentIndex++;
+            
+            setTimeout(() => {
+                if (currentIndex === quotesData.length) {
+                    showFinalPhoto();
+                } else {
+                    showNextQuote();
+                }
+            }, 2000);
+
+        }, readingTime);
+    }
+}
+
+        function showFinalPhoto() {
+            quoteContainer.style.display = 'none';
+            photoContainer.style.display = 'flex'; 
+            setTimeout(() => {
+                photoContainer.classList.add('show-photo');
+            }, 500);
+        }
+
+      
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+
+        function initParticles() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = canvas.height + Math.random() * 100;
+                    this.size = Math.random() * 3 + 1;
+                    this.speedY = Math.random() * 1 + 0.5; 
+                    this.speedX = (Math.random() - 0.5) * 0.5;
+                    const colors = ['rgba(255, 159, 67,', 'rgba(238, 82, 83,', 'rgba(254, 202, 87,'];
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
+                    this.opacity = Math.random() * 0.8 + 0.2;
+                }
+                update() {
+                    this.y -= this.speedY;
+                    this.x += this.speedX;
+                    this.opacity -= 0.002;
+                    
+                    if (this.opacity <= 0 || this.y < -10) {
+                        this.y = canvas.height + 10;
+                        this.x = Math.random() * canvas.width;
+                        this.opacity = Math.random() * 0.8 + 0.2;
+                    }
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color + this.opacity + ')';
+                    ctx.fill();
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = this.color + '1)';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
