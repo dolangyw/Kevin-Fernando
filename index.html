@@ -99,6 +99,84 @@ html {
     @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-15px)}100%{transform:translateY(0)}}
     @keyframes pageIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
+    
+    @keyframes glitchPageIn{
+      0%{opacity:0;clip-path:inset(0 0 100% 0);transform:translate(-6px,0) skewX(-2deg)}
+      10%{opacity:1;clip-path:inset(30% 0 20% 0);transform:translate(4px,0) skewX(1deg)}
+      20%{clip-path:inset(60% 0 5% 0);transform:translate(-4px,0)}
+      30%{clip-path:inset(10% 0 60% 0);transform:translate(3px,0) skewX(-1deg)}
+      40%{clip-path:inset(0 0 0 0);transform:translate(-2px,1px)}
+      55%{clip-path:inset(45% 0 30% 0);transform:translate(5px,-1px)}
+      70%{clip-path:inset(0 0 0 0);transform:translate(-1px,0)}
+      85%{clip-path:inset(20% 0 50% 0);transform:translate(2px,0)}
+      100%{opacity:1;clip-path:inset(0 0 0% 0);transform:translate(0,0) skewX(0)}
+    }
+    @keyframes glitchPageInR{
+      0%{opacity:0;clip-path:inset(0 0 100% 0);transform:translate(6px,0) skewX(2deg)}
+      15%{opacity:.8;clip-path:inset(50% 0 10% 0);transform:translate(-5px,0)}
+      30%{clip-path:inset(5% 0 70% 0);transform:translate(4px,1px)}
+      50%{clip-path:inset(0 0 0 0);transform:translate(-3px,0)}
+      65%{clip-path:inset(35% 0 25% 0);transform:translate(2px,0)}
+      80%{clip-path:inset(0 0 0 0);transform:translate(-1px,0)}
+      100%{opacity:0;clip-path:inset(0 0 100% 0);transform:translate(0,0)}
+    }
+    .page.active{
+      display:block;
+      animation:glitchPageIn .55s steps(1) forwards;
+      position:relative;
+    }
+    .page.active::before{
+      content:'';position:absolute;inset:0;pointer-events:none;z-index:10;
+      background:var(--accent);mix-blend-mode:exclusion;opacity:0;
+      animation:glitchPageInR .55s steps(1) forwards;
+    }
+    .page.active::after{
+      content:'';position:absolute;inset:0;pointer-events:none;z-index:9;
+      background:#0ff;mix-blend-mode:screen;opacity:0;
+      animation:glitchPageInR .55s steps(1) .06s forwards;
+    }
+
+    
+    @keyframes brandGlitch{
+      0%,100%{text-shadow:none;transform:translate(0)}
+      5%{text-shadow:-3px 0 #f00,3px 0 #0ff;transform:translate(-2px,0)}
+      10%{text-shadow:3px 0 #f0f,-3px 0 #0f0;transform:translate(2px,0)}
+      15%{text-shadow:-2px 0 #0ff,2px 0 #f00;transform:translate(0,0)}
+      20%{text-shadow:none;transform:translate(0)}
+    }
+    @keyframes brandGlitchSpan{
+      0%,100%{color:var(--accent);text-shadow:none}
+      5%{color:#f00;text-shadow:2px 0 #0ff,-2px 0 #f0f}
+      10%{color:#0ff;text-shadow:-2px 0 #f00,2px 0 #0f0}
+      15%{color:var(--accent);text-shadow:none}
+    }
+    .brand.glitching{animation:brandGlitch .4s steps(2) forwards}
+    .brand.glitching span{animation:brandGlitchSpan .4s steps(2) forwards}
+
+    
+    @keyframes neonBarLoop{
+      0%,100%{
+        background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 60%,#fff));
+        box-shadow:0 0 4px var(--accent),0 0 10px color-mix(in srgb,var(--accent) 40%,transparent);
+      }
+      25%{
+        background:linear-gradient(90deg,#06b6d4,#818cf8);
+        box-shadow:0 0 8px #06b6d4,0 0 20px rgba(6,182,212,.4);
+      }
+      50%{
+        background:linear-gradient(90deg,#a855f7,#ec4899);
+        box-shadow:0 0 8px #a855f7,0 0 20px rgba(168,85,247,.4);
+      }
+      75%{
+        background:linear-gradient(90deg,#10b981,#06b6d4);
+        box-shadow:0 0 8px #10b981,0 0 20px rgba(16,185,129,.4);
+      }
+    }
+    .skill-bar-fill.animated{
+      width:var(--bar-w);
+      animation:neonBarLoop 3s ease-in-out 1.2s infinite;
+    }
+
     .container{max-width:1100px;margin:0 auto;padding:0 24px}
     .glass-panel{
       background:var(--glass-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
@@ -133,7 +211,6 @@ html {
     .btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
 
     .page{display:none;min-height:100vh;padding-top:110px;padding-bottom:80px}
-    .page.active{display:block;animation:pageIn .35s ease}
 
     .hero{min-height:calc(100vh - 110px);display:flex;align-items:center}
     .hero-layout{display:flex;align-items:center;gap:50px;width:100%}
@@ -440,9 +517,7 @@ html {
       grid-column:1/-1
     }
 
-    /* ═══════════════════════════════════════════
-       MUSIC PLAYER — REVAMPED WITH ANIMATIONS
-    ═══════════════════════════════════════════ */
+    
     @keyframes musicBarBounce{
       0%,100%{transform:scaleY(.3)}
       50%{transform:scaleY(1)}
@@ -467,7 +542,7 @@ html {
     }
     .music-popup.show{display:block;animation:musicSlideIn .28s cubic-bezier(.22,1,.36,1)}
 
-    /* Album art header */
+    
     .music-art-header{
       position:relative;padding:20px 20px 16px;display:flex;gap:16px;align-items:center;
       background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 18%,transparent),rgba(0,0,0,.08));
@@ -504,7 +579,7 @@ html {
       cursor:pointer;font-size:1rem;line-height:1;flex-shrink:0;
     }
 
-    /* Visualizer bars */
+    
     .music-visualizer{
       display:flex;align-items:flex-end;gap:3px;height:28px;margin-top:6px;
     }
@@ -528,7 +603,7 @@ html {
     .music-now strong{display:block;font-size:.9rem;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
     .music-now span{display:block;color:var(--text-muted);font-size:.8rem}
 
-    /* Time display */
+    
     .music-time-row{display:flex;justify-content:space-between;font-size:.75rem;color:var(--text-muted);margin-bottom:4px}
 
     .music-progress{
@@ -560,7 +635,7 @@ html {
     }
     .music-control.play:hover{background:var(--accent-hover);transform:scale(1.1)}
 
-    /* Volume slider */
+    
     .music-volume-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
     .music-vol-icon{font-size:.9rem;flex-shrink:0;color:var(--text-muted)}
     .music-volume{
@@ -592,7 +667,7 @@ html {
       padding:14px;border-radius:12px;border:1px dashed var(--glass-border);color:var(--text-muted);text-align:center
     }
 
-    /* ── Social FAB ── */
+    
     .social-fab-wrapper{position:relative;display:flex;flex-direction:column;align-items:center;gap:0}
     .social-fab-popup{
       position:absolute;bottom:60px;right:0;display:flex;flex-direction:column;gap:8px;
@@ -612,7 +687,7 @@ html {
     .social-fab-icon{font-size:1.2rem;flex-shrink:0}
     .social-fab-label{flex:1}
 
-    /* ── Glitch effect ── */
+    
     @keyframes glitch1{
       0%,100%{clip-path:inset(0 0 85% 0);transform:translate(-4px,0)}
       20%{clip-path:inset(30% 0 50% 0);transform:translate(4px,0)}
@@ -657,12 +732,10 @@ html {
     .glitch-layer.g1 img{animation:glitch1 .35s steps(2) forwards;filter:hue-rotate(90deg) saturate(2);mix-blend-mode:screen;opacity:.75}
     .glitch-layer.g2 img{animation:glitch2 .35s steps(2) forwards;filter:hue-rotate(200deg) saturate(2);mix-blend-mode:screen;opacity:.75}
 
-    /* ── No-login like/dislike ── */
+    
     .comment-footer button.guest-reaction{opacity:.85}
 
-    /* ═══════════════════════════════════════════
-       EMOJI RATING SYSTEM
-    ═══════════════════════════════════════════ */
+    
     @keyframes emojiPop{0%{transform:scale(1)}40%{transform:scale(1.45)}70%{transform:scale(.9)}100%{transform:scale(1)}}
     @keyframes chartDraw{from{stroke-dashoffset:var(--dash-total)}to{stroke-dashoffset:0}}
 
@@ -675,7 +748,7 @@ html {
     .emoji-rating-header h4{font-size:.95rem;font-weight:800;color:var(--text-main)}
     .emoji-total-label{font-size:.82rem;color:var(--text-muted)}
 
-    /* SVG curve chart */
+    
     .rating-chart-wrap{
       width:100%;height:72px;margin-bottom:10px;position:relative;overflow:hidden;border-radius:10px;
       background:rgba(0,0,0,.06);
@@ -698,7 +771,7 @@ html {
       padding:2px 6px;border-radius:999px;background:color-mix(in srgb,var(--accent) 12%,transparent);
     }
 
-    /* Emoji buttons */
+    
     .emoji-btns{
       display:flex;gap:8px;justify-content:center;padding-bottom:16px;
     }
@@ -717,9 +790,7 @@ html {
     .emoji-btn .e-count{font-size:.72rem;font-weight:700;color:var(--text-muted)}
     .emoji-btn.selected .e-count{color:var(--accent)}
 
-    /* ═══════════════════════════════════════════
-       ANONYMOUS MESSAGE FAB & MODAL
-    ═══════════════════════════════════════════ */
+    
     @keyframes fabPulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 60%,transparent)}70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
 
     .anon-fab{
@@ -759,9 +830,7 @@ html {
     .anon-char-count{font-size:.78rem;color:var(--text-muted);text-align:right;margin-bottom:14px;}
     .anon-modal-footer{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
 
-    /* ═══════════════════════════════════════════
-       ADMIN PANEL — ENHANCED
-    ═══════════════════════════════════════════ */
+    
     .admin-tabs{
       display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;border-bottom:1px solid var(--glass-border);padding-bottom:14px;
     }
@@ -775,7 +844,7 @@ html {
     .admin-panel-section{display:none}
     .admin-panel-section.active{display:block}
 
-    /* Stats cards enhanced */
+    
     .admin-stats-enhanced{
       display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px;
     }
@@ -790,7 +859,7 @@ html {
     .admin-stat-value{font-size:1.6rem;font-weight:900;color:var(--text-main);line-height:1}
     .admin-stat-sub{font-size:.72rem;color:var(--text-muted)}
 
-    /* Anonymous messages in admin */
+    
     .anon-msg-item{
       padding:14px 16px;border-radius:14px;border:1px solid var(--glass-border);
       background:rgba(0,0,0,.06);position:relative;
@@ -808,7 +877,7 @@ html {
     .anon-msg-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
     .admin-msgs-list{display:flex;flex-direction:column;gap:10px;max-height:560px;overflow:auto;padding-right:4px}
 
-    /* Rating overview in admin */
+    
     .admin-rating-overview{
       display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:16px;
       border-radius:14px;background:rgba(0,0,0,.06);border:1px solid var(--glass-border);margin-bottom:16px;
@@ -823,9 +892,7 @@ html {
     }
 
 
-    /* ═══════════════════════════════════════════
-       SKILLS PAGE — REVAMPED
-    ═══════════════════════════════════════════ */
+    
     @keyframes barGrow{from{width:0}to{width:var(--bar-w)}}
     @keyframes skillCardIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
     @keyframes glowPulse{0%,100%{opacity:.3}50%{opacity:.7}}
@@ -860,7 +927,6 @@ html {
       height:100%;background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 60%,#fff));
       border-radius:999px;width:0;transition:width 1.1s cubic-bezier(.22,1,.36,1);
     }
-    .skill-bar-fill.animated{width:var(--bar-w)}
 
     .skills-cards-grid{
       display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;
@@ -887,9 +953,7 @@ html {
       background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent);
     }
 
-    /* ═══════════════════════════════════════════
-       PROJECTS PAGE — REVAMPED
-    ═══════════════════════════════════════════ */
+    
     @keyframes projNumIn{from{opacity:0;transform:translateX(-12px)}to{opacity:.12;transform:translateX(0)}}
 
     .projects-grid{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
@@ -922,9 +986,7 @@ html {
     .proj-card-footer{margin-top:auto;padding-top:12px;border-top:1px solid var(--glass-border)}
     .proj-card-footer .btn{font-size:.85rem;padding:8px 16px;display:inline-flex;align-items:center;gap:6px}
 
-    /* ═══════════════════════════════════════════
-       SHOP PAGE — REVAMPED
-    ═══════════════════════════════════════════ */
+    
     @keyframes shimmer{from{background-position:-200% 0}to{background-position:200% 0}}
 
     .shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
@@ -958,9 +1020,7 @@ html {
     .shop-empty{grid-column:1/-1;padding:40px;text-align:center;color:var(--text-muted)}
     .shop-empty-icon{font-size:2.5rem;margin-bottom:10px}
 
-    /* ═══════════════════════════════════════════
-       GALLERY PAGE — REVAMPED
-    ═══════════════════════════════════════════ */
+    
     @keyframes galleryCardIn{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:scale(1)}}
 
     .gallery-grid{display:grid;gap:12px;grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -1004,6 +1064,75 @@ html {
 
     footer{text-align:center;padding:40px 0 20px;color:var(--text-muted);font-size:.9rem}
 
+    
+    .auth-modal{
+      position:fixed;inset:0;z-index:1300;display:none;align-items:center;justify-content:center;
+      background:rgba(0,0,0,.65);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:20px;
+    }
+    .auth-modal.show{display:flex;animation:pageIn .22s ease}
+    .auth-modal-card{
+      width:100%;max-width:440px;background:var(--bg-base);border:1px solid var(--glass-border);
+      border-radius:24px;box-shadow:var(--shadow),0 0 50px color-mix(in srgb,var(--accent) 15%,transparent);
+      overflow:hidden;
+    }
+    .auth-modal-head{
+      padding:22px 24px 18px;
+      background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 16%,transparent),rgba(0,0,0,.04));
+      border-bottom:1px solid var(--glass-border);
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+    }
+    .auth-modal-head h3{font-size:1.1rem;font-weight:800;display:flex;align-items:center;gap:8px;}
+    .auth-modal-close{
+      width:32px;height:32px;border-radius:10px;border:1px solid var(--glass-border);
+      background:rgba(0,0,0,.1);color:var(--text-main);cursor:pointer;font-size:1rem;line-height:1;
+    }
+    .auth-modal-body{padding:22px 24px}
+    .auth-field{margin-bottom:14px}
+    .auth-field label{display:block;font-size:.9rem;font-weight:600;margin-bottom:7px;color:var(--text-main)}
+    .auth-input{
+      width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--glass-border);
+      background:rgba(0,0,0,.1);color:var(--text-main);font-family:inherit;font-size:.95rem;
+      transition:border-color .3s;
+    }
+    .auth-input:focus{outline:none;border-color:var(--accent)}
+    .auth-divider{
+      display:flex;align-items:center;gap:12px;margin:18px 0;color:var(--text-muted);font-size:.85rem;
+    }
+    .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--glass-border)}
+    .auth-google-btn{
+      width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--glass-border);
+      background:rgba(255,255,255,.06);color:var(--text-main);font-family:inherit;font-size:.95rem;
+      font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;
+      transition:all .25s ease;
+    }
+    .auth-google-btn:hover{background:rgba(255,255,255,.12);border-color:var(--accent)}
+    .auth-switch{
+      text-align:center;margin-top:16px;font-size:.88rem;color:var(--text-muted);
+    }
+    .auth-switch button{
+      background:none;border:none;color:var(--accent);font-weight:700;cursor:pointer;font-size:.88rem;
+      padding:0;text-decoration:underline;
+    }
+    .auth-error{
+      padding:10px 14px;border-radius:10px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);
+      color:#ef4444;font-size:.86rem;margin-bottom:12px;display:none;
+    }
+    .auth-error.show{display:block}
+    .auth-success{
+      padding:10px 14px;border-radius:10px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);
+      color:#22c55e;font-size:.86rem;margin-bottom:12px;display:none;
+    }
+    .auth-success.show{display:block}
+    .auth-tabs{
+      display:flex;border-bottom:1px solid var(--glass-border);margin-bottom:18px;
+    }
+    .auth-tab-btn{
+      flex:1;padding:10px;border:none;background:transparent;color:var(--text-muted);
+      font-weight:700;font-size:.88rem;cursor:pointer;border-bottom:2px solid transparent;
+      transition:all .2s ease;
+    }
+    .auth-tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+
     .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
     .contact-card h3{font-size:1.1rem;margin-bottom:8px}
     .contact-card p{color:var(--text-muted);font-size:.95rem}
@@ -1037,7 +1166,7 @@ html {
       <div class="brand" data-page-btn="home">KVN<span>.DEV</span></div>
       <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
         <span id="userName" style="font-weight:600; font-size:0.9rem;"></span>
-        <button class="btn primary" id="loginBtn">Login</button>
+        <button class="btn primary" id="loginBtn">Login / Daftar</button>
         <button class="btn" id="logoutBtn" style="display:none;">Logout</button>
       </div>
     </div>
@@ -1080,16 +1209,15 @@ html {
                 <h4>Rating Pengunjung</h4>
                 <span class="emoji-total-label" id="emojiTotalLabel">0 votes</span>
               </div>
-              <!-- SVG Chart -->
-              <div class="rating-chart-wrap">
-                <svg class="rating-chart-svg" id="ratingChartSvg" viewBox="0 0 400 72" preserveAspectRatio="none">
-                  <path class="rating-chart-fill" id="ratingChartFill" d=""/>
-                  <polyline class="rating-chart-line" id="ratingChartLine" points=""/>
-                  <!-- dots injected by JS -->
-                </svg>
+              
+              <div class="admin-rating-overview" id="homeRatingOverview" style="margin-bottom:14px;">
+                <div class="admin-rating-big" id="homeRatingAvg">—</div>
+                <div class="admin-rating-info">
+                  <p id="homeRatingDesc">Belum ada votes</p>
+                  <div class="admin-emoji-breakdown" id="homeEmojiBreakdown"></div>
+                </div>
               </div>
-              <div class="rating-pct-labels" id="emojiPctLabels"></div>
-              <!-- Emoji Buttons -->
+              
               <div class="emoji-btns" id="emojiBtns">
                 <button class="emoji-btn" data-emoji="☹️" data-val="1" type="button">
                   <span class="e-icon">☹️</span><span class="e-count" id="ec1">0</span>
@@ -1123,7 +1251,7 @@ html {
             </div>
 
 
-            <div class="auth-lock" id="commentLock">Login menggunakan akun Google untuk mengirim komentar.</div>
+            <div class="auth-lock" id="commentLock">Login untuk mengirim komentar.</div>
             <input type="hidden" id="commentRating" value="5" />
             <form class="comment-form" id="commentForm">
               <textarea id="commentInput" placeholder="Tulis komentar kamu di sini..." autocomplete="off" disabled></textarea>
@@ -1324,7 +1452,7 @@ html {
 
           <div class="glass-panel reveal">
             <h3 style="margin-bottom:12px;color:var(--accent);">Info Shop</h3>
-            <p style="color:var(--text-muted);line-height:1.65;margin-bottom:10px;">dua singgit dua singgit.</p>
+            <p style="color:var(--text-muted);line-height:1.65;margin-bottom:10px;">Laris maka larislah🗿.</p>
           </div>
 
           <div id="shopGrid" class="shop-grid"></div>
@@ -1383,13 +1511,13 @@ html {
 
         <div id="adminContent" class="admin-layout" style="display:none;">
 
-          <!-- Stats Enhanced -->
+          
           <div class="glass-panel reveal">
             <h3 style="margin-bottom:16px;color:var(--accent);display:flex;align-items:center;gap:8px;">📊 Dashboard Overview</h3>
             <div class="admin-stats-enhanced" id="adminStatsEnhanced"></div>
           </div>
 
-          <!-- Admin Rating Overview -->
+          
           <div class="glass-panel reveal">
             <h3 style="margin-bottom:14px;color:var(--accent);display:flex;align-items:center;gap:8px;">😊 Rating Overview</h3>
             <div class="admin-rating-overview">
@@ -1401,7 +1529,7 @@ html {
             </div>
           </div>
 
-          <!-- Tabs -->
+          
           <div class="glass-panel reveal">
             <div class="admin-tabs">
               <button class="admin-tab active" data-tab="users">👥 Akun</button>
@@ -1410,7 +1538,7 @@ html {
               <button class="admin-tab" data-tab="comments">💬 Komentar</button>
             </div>
 
-            <!-- Users tab -->
+            
             <div class="admin-panel-section active" id="tabUsers">
               <div style="margin-bottom:14px;">
                 <input id="adminUserSearch" class="admin-input" type="text" placeholder="Cari nama, email, atau UID..." autocomplete="off">
@@ -1419,7 +1547,7 @@ html {
               <div id="adminUsersList" class="admin-users"></div>
             </div>
 
-            <!-- Anonymous messages tab -->
+            
             <div class="admin-panel-section" id="tabMessages">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
                 <p class="admin-small">Pesan anonim dari pengunjung tanpa login.</p>
@@ -1428,12 +1556,12 @@ html {
               <div id="adminAnonMsgsList" class="admin-msgs-list"></div>
             </div>
 
-            <!-- Activity tab -->
+            
             <div class="admin-panel-section" id="tabActivity">
               <div id="adminActivityList" class="admin-activity-list"></div>
             </div>
 
-            <!-- Comments tab -->
+            
             <div class="admin-panel-section" id="tabComments">
               <div id="adminCommentsList" class="admin-activity-list"></div>
             </div>
@@ -1449,11 +1577,11 @@ html {
   <div class="menu-wrapper">
     <button class="menu-toggle" id="menuToggle" aria-label="Buka menu">☰</button>
     <div class="menu-popup" id="menuPopup">
-      <button class="menu-item active" data-page-btn="home">🏠 Home</button>
-      <button class="menu-item" data-page-btn="skills">🧰 Skills</button>
-      <button class="menu-item" data-page-btn="projects">🚀 Projects</button>
-      <button class="menu-item" data-page-btn="shop">🛒 Shop</button>
-      <button class="menu-item" data-page-btn="gallery">🖼️ Gallery</button>
+      <button class="menu-item active" data-page-btn="home"> Home</button>
+      <button class="menu-item" data-page-btn="skills"> Skills</button>
+      <button class="menu-item" data-page-btn="projects"> Projects</button>
+      <button class="menu-item" data-page-btn="shop"> Shop</button>
+      <button class="menu-item" data-page-btn="gallery"> Gallery</button>
       <button class="menu-item" data-page-btn="admin" id="adminMenuBtn" style="display:none;">🛡️ Admin</button>
     </div>
   </div>
@@ -1482,7 +1610,7 @@ html {
   </div>
 
   <div class="music-popup" id="musicPopup" aria-hidden="true">
-    <!-- Album art header -->
+    
     <div class="music-art-header">
       <div class="music-disc" id="musicDisc">
         <div class="music-disc-ring"></div>
@@ -1495,7 +1623,7 @@ html {
           <button class="music-close" id="musicClose" type="button">×</button>
         </div>
         <div class="music-subtitle" id="musicSubtitle">Folder <code>musik/</code></div>
-        <!-- Visualizer bars -->
+        
         <div class="music-visualizer" id="musicVisualizer">
           <div class="music-bar" style="height:12px"></div>
           <div class="music-bar" style="height:18px"></div>
@@ -1528,7 +1656,7 @@ html {
         <button class="music-control" id="musicNext" type="button" title="Berikutnya">⏭</button>
       </div>
 
-      <!-- Volume -->
+      
       <div class="music-volume-row">
         <span class="music-vol-icon" id="musicVolIcon">🔊</span>
         <input class="music-volume" type="range" id="musicVolume" min="0" max="1" step="0.05" value="0.85">
@@ -1556,7 +1684,77 @@ html {
     <div class="image-modal-caption" id="imageModalCaption"></div>
   </div>
 
-  <!-- Anonymous Message Modal -->
+  
+  <div class="auth-modal" id="authModal" aria-hidden="true">
+    <div class="auth-modal-card">
+      <div class="auth-modal-head">
+        <h3 id="authModalTitle">🔐 Masuk / Daftar</h3>
+        <button class="auth-modal-close" id="authModalClose" type="button">×</button>
+      </div>
+      <div class="auth-modal-body">
+        
+        <div class="auth-tabs" id="authTabs">
+          <button class="auth-tab-btn active" data-mode="login">Masuk</button>
+          <button class="auth-tab-btn" data-mode="register">Daftar</button>
+          <button class="auth-tab-btn" data-mode="reset">Lupa Sandi</button>
+        </div>
+
+        
+        <div class="auth-error" id="authError"></div>
+        <div class="auth-success" id="authSuccess"></div>
+
+        
+        <div id="authFormLogin">
+          <div class="auth-field">
+            <label for="authEmail">Email</label>
+            <input class="auth-input" type="email" id="authEmail" placeholder="nama@email.com" autocomplete="email">
+          </div>
+          <div class="auth-field">
+            <label for="authPassword">Password</label>
+            <input class="auth-input" type="password" id="authPassword" placeholder="Password kamu" autocomplete="current-password">
+          </div>
+          <button class="btn primary" id="authSubmitBtn" style="width:100%;margin-top:4px;">Masuk</button>
+          <div class="auth-divider">atau</div>
+          <button class="auth-google-btn" id="authGoogleBtn">
+            <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+            Lanjutkan dengan Google
+          </button>
+        </div>
+
+        
+        <div id="authFormRegister" style="display:none;">
+          <div class="auth-field">
+            <label for="authRegName">Nama Tampilan</label>
+            <input class="auth-input" type="text" id="authRegName" placeholder="Nama kamu" autocomplete="name">
+          </div>
+          <div class="auth-field">
+            <label for="authRegEmail">Email</label>
+            <input class="auth-input" type="email" id="authRegEmail" placeholder="nama@email.com" autocomplete="email">
+          </div>
+          <div class="auth-field">
+            <label for="authRegPassword">Password</label>
+            <input class="auth-input" type="password" id="authRegPassword" placeholder="Min. 6 karakter" autocomplete="new-password">
+          </div>
+          <button class="btn primary" id="authRegisterBtn" style="width:100%;margin-top:4px;">Buat Akun</button>
+          <div class="auth-divider">atau</div>
+          <button class="auth-google-btn" id="authGoogleBtnReg">
+            <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+            Lanjutkan dengan Google
+          </button>
+        </div>
+
+        
+        <div id="authFormReset" style="display:none;">
+          <p style="color:var(--text-muted);font-size:.88rem;margin-bottom:14px;line-height:1.6;">Masukkan email terdaftar. Link reset password akan dikirim.</p>
+          <div class="auth-field">
+            <label for="authResetEmail">Email</label>
+            <input class="auth-input" type="email" id="authResetEmail" placeholder="nama@email.com" autocomplete="email">
+          </div>
+          <button class="btn primary" id="authResetBtn" style="width:100%;margin-top:4px;">Kirim Link Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="anon-modal" id="anonModal" aria-hidden="true">
     <div class="anon-modal-card">
       <div class="anon-modal-head">
@@ -1579,8 +1777,7 @@ html {
 
   <footer class="container">© 2026 Kevin Fernando.</footer>
 
-  <script type="module" src="script.js">
-
+  <script type="module" src="./script.js">
   </script>
 </body>
 </html>
